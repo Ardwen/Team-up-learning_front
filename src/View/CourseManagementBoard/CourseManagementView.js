@@ -1,7 +1,7 @@
 import React from "react";
 import "antd/dist/antd.css";
 import "./index.css";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Badge } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -10,7 +10,9 @@ import {
   DashboardOutlined,
   HistoryOutlined
 } from "@ant-design/icons";
-import CourseDashboard from "./Components/coursedashboard.js";
+import CourseDashboard from "./coursedashboard.js";
+import Mailbox from "./mailbox.js";
+import CourseHistory from "./history.js";
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 class CourseManagementView extends React.Component {
@@ -49,7 +51,9 @@ class CourseManagementView extends React.Component {
       case "1":
         return <CourseDashboard />;
       case "2":
-        return <br />;
+        return <CourseHistory />;
+      case "3":
+        return <Mailbox />;
       default:
     }
   }
@@ -76,7 +80,12 @@ class CourseManagementView extends React.Component {
             </Menu.Item>
             <Menu.Item
               key="3"
-              icon={<MessageOutlined />}
+              icon={
+                <Badge count={1} dot>
+                  {" "}
+                  <MessageOutlined />
+                </Badge>
+              }
               onClick={this.switchToMessage}
             >
               Message
