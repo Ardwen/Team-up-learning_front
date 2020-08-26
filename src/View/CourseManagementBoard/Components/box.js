@@ -12,7 +12,7 @@ function CourseBox(props) {
             bordered={true}
             style={{ backgroundColor: "#188fffd0" }}
           >
-            You have 5 lectures scheduled
+            You have {props.box1} lectures scheduled
           </Card>
         </Col>
         <Col span={12}>
@@ -21,7 +21,7 @@ function CourseBox(props) {
             bordered={true}
             style={{ backgroundColor: "#f1855ad0" }}
           >
-            You have completed 11 Lectures
+            You have completed 0 Lectures
           </Card>
         </Col>
       </Row>

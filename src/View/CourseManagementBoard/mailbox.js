@@ -11,8 +11,9 @@ class Mailbox extends React.Component {
   };
 
   componentWillMount() {
-    API.get(`user/Susie`)
+    API.get(`user/John`)
       .then(res => {
+        console.log(res.data.mailBox);
         let rows = res.data.mailBox.map((item,i) => {
            return {
              key:i,
@@ -21,9 +22,10 @@ class Mailbox extends React.Component {
              date:item.date,
              time:item.time,
              participants:item.participants,
+             sendById:item.sentByID,
              courseID:item.courseID};
         });
-        console.log(rows);
+
         this.setState({
           invitations: rows
         });
@@ -103,7 +105,6 @@ class Mailbox extends React.Component {
           </div>
         ) : (
           <div>
-          <p>test content</p>
             <Row>
             {this.state.invitations.map((Item, index) => {
               return (

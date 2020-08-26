@@ -62,11 +62,20 @@ function CourseDashboard(props){
       render: (text) => (
         <Space size="middle">
           <Link to={`/room/${text}`}> Enter Room</Link>
-          <button> Invite </button>
-          <button onClick={handleDelete(text)}> Delete </button>
+        </Space>
+      )
+    },
+    {
+      title: "Delete",
+      key: "delete",
+      dataIndex: "key",
+      render: (id) => (
+        <Space size="middle">
+          <button onClick={()=>handleDelete(id)}> Delete </button>
         </Space>
       )
     }
+
   ];
 
   const [courselist, setcourselist] = useState([]);
@@ -78,10 +87,11 @@ function CourseDashboard(props){
   const [participants, setparticipants] = useState([]);
 
   useEffect(() => {
-    API.get(`user/Susie`)
+    API.get(`user/John`)
       .then(res => {
         let rows = res.data.courses.map((item,i) => {
-           return {key:i,
+           return {
+             key:i,
              courseName:item.courseName,
              date:item.date,
              time:item.time,
@@ -121,7 +131,9 @@ function CourseDashboard(props){
       console.log(id);
     };
 
-    const handleDelete=(id)=> {
+    const handleDelete=(key)=> {
+      var dataSource = [...courselist];
+      setcourselist(dataSource.filter(item => item.key !== key));
       /*API.delete(`user/${id}`).then((res) => {
         //this.courselist.splice()
         console.log(res);
