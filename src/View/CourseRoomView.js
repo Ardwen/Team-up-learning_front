@@ -131,17 +131,29 @@ const Room = (props) => {
   }
 
   function stopVideo() {
-    peerRef.current.send(JSON.stringify({ type: "pause" }));
+    try {
+          peerRef.current.send(JSON.stringify({ type: "pause" }));
+      }
+      catch(err) {
+      }
     youtubePlayer.current.pauseVideo();
   }
 
   function playVideo() {
-    peerRef.current.send(JSON.stringify({ type: "play" }));
+    try {
+        peerRef.current.send(JSON.stringify({ type: "play" }));
+      }
+      catch(err) {
+      }
     youtubePlayer.current.playVideo();
   }
 
   function loadVideo() {
-    peerRef.current.send(JSON.stringify({ type: "newVideo", data: videoID }));
+    try {
+        peerRef.current.send(JSON.stringify({ type: "newVideo", data: videoID }));
+      }
+      catch(err) {
+      }
     youtubePlayer.current.loadVideoById(videoID.split("=")[1]);
   }
 
