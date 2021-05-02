@@ -11,7 +11,9 @@ class Mailbox extends React.Component {
   };
 
   componentWillMount() {
-    API.get(`user/John`)
+    let user= sessionStorage.getItem('username');
+    const token = sessionStorage.getItem('access_token');
+    API.get(`user/${user}`,{ headers: {"Authorization" : `Bearer ${token}`}})
       .then(res => {
         console.log(res.data.mailBox);
         let rows = res.data.mailBox.map((item,i) => {
@@ -40,6 +42,7 @@ class Mailbox extends React.Component {
         this.setState({
           invitations: array
         });
+        this.props.history.push('/dashboard');
       })
       .catch((err) => {
         console.log(err);
@@ -54,6 +57,7 @@ class Mailbox extends React.Component {
         this.setState({
           invitations: array
         });
+        this.props.history.push('/dashboard');
       })
       .catch((err) => {
         console.log(err);

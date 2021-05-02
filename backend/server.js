@@ -39,6 +39,7 @@ io.on('connection', socket => {
             rooms[roomID] = [socket.id];
         }
         const otherUser = rooms[roomID].find(id => id !== socket.id);
+        console.log("user emit");
         socket.emit("other user", otherUser);
     })
 

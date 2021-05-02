@@ -18,7 +18,9 @@ const { SubMenu } = Menu;
 class CourseManagementView extends React.Component {
   state = {
     collapsed: false,
-    content: "1"
+    content: "1",
+    theme: "dark",
+    color: "#003366"
   };
 
   toggle = () => {
@@ -46,6 +48,26 @@ class CourseManagementView extends React.Component {
     });
   };
 
+  changeTheme = () => {
+    if(this.state.theme == "light"){
+      this.setState({
+        theme: "dark",
+        color: "#003366"
+      });
+    } else {
+      this.setState({
+        theme: "light",
+        color: "white"
+      });
+    }
+  }
+
+  logout = () => {
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("access_token");
+    this.props.history.push('/login');
+  }
+
   renderSwitch(param) {
     switch (param) {
       case "1":
@@ -62,8 +84,7 @@ class CourseManagementView extends React.Component {
     return (
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+          <Menu theme={this.state.theme} mode="inline" defaultSelectedKeys={["1"]} style={{ height: '100%', borderRight: 0 }}>
             <Menu.Item
               key="1"
               icon={<DashboardOutlined />}
@@ -90,28 +111,32 @@ class CourseManagementView extends React.Component {
             >
               Message
             </Menu.Item>
+            <Menu.Item
+              key="4"
+              icon={
+                <Badge count={1} dot>
+                  {" "}
+                  <DashboardOutlined />
+                </Badge>
+              }
+              onClick={this.changeTheme}
+            >
+              Change Theme
+            </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-              <Menu.Item key="1">Log out</Menu.Item>
-              <Menu.Item key="2">Change Account</Menu.Item>
+              <Menu.Item key="1" onClick={this.logout}>Log out</Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
-            {React.createElement(
-              this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: this.toggle
-              }
-            )}
-          </Header>
+
           <Content
             className="site-layout-background"
             style={{
               margin: "24px 16px",
               padding: 24,
-              minHeight: 280
+              minHeight: 280,
+              backgroundColor: this.state.color
             }}
           >
             {this.renderSwitch(this.state.content)}

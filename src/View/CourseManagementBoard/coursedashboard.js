@@ -87,8 +87,11 @@ function CourseDashboard(props){
   const [participants, setparticipants] = useState([]);
 
   useEffect(() => {
-    API.get(`user/John`)
+    const username = sessionStorage.getItem('username');
+    const token = sessionStorage.getItem('access_token');
+    API.get(`user/${username}`,{ headers: {"Authorization" : `Bearer ${token}`}})
       .then(res => {
+        console.log(res.data);
         let rows = res.data.courses.map((item,i) => {
            return {
              key:i,
@@ -98,13 +101,11 @@ function CourseDashboard(props){
              participants:item.participants,
              courseID:item._id};
         });
-        console.log(rows);
         setcourselist(rows);
       })
   },[]);
 
   const handleCancel=()=>{
-    console.log("Clicked cancel button");
     setvisible(false);
     setdate("");
     settime([]);
@@ -117,7 +118,6 @@ function CourseDashboard(props){
   }
 
   const onDateChange=(value, dateString)=>{
-    console.log(dateString);
     setdate(dateString);
   }
 
@@ -146,12 +146,13 @@ function CourseDashboard(props){
     }
 
     const handleOk=()=>{
+      let user = sessionStorage.getItem('username');
       let dataToSubmit = {
         courseName: title,
         date: date,
         time: time,
         participants: participants,
-        host: "Susie"
+        host: user
       };
       console.log(dataToSubmit);
 
