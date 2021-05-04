@@ -114,10 +114,7 @@ class CourseManagementView extends React.Component {
             <Menu.Item
               key="4"
               icon={
-                <Badge count={1} dot>
-                  {" "}
                   <DashboardOutlined />
-                </Badge>
               }
               onClick={this.changeTheme}
             >

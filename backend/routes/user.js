@@ -53,6 +53,10 @@ router.route("/login").post((req, res) => {
       if(err){
         res.status(400).json("Error: " + err)
       }
+      if (!user){
+        res.status(400).json("Error")
+        return;
+      }
       const accessToken = jwt.sign({ userName: user.userName}, accessTokenSecret);
       res.json({
             accessToken

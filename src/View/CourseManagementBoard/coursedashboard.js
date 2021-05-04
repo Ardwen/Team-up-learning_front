@@ -86,6 +86,25 @@ function CourseDashboard(props){
   const [time, settime] = useState([]);
   const [participants, setparticipants] = useState([]);
 
+  const refresh=()=>{
+    const username = sessionStorage.getItem('username');
+    const token = sessionStorage.getItem('access_token');
+    API.get(`user/${username}`,{ headers: {"Authorization" : `Bearer ${token}`}})
+      .then(res => {
+        console.log(res.data);
+        let rows = res.data.courses.map((item,i) => {
+           return {
+             key:i,
+             courseName:item.courseName,
+             date:item.date,
+             time:item.time,
+             participants:item.participants,
+             courseID:item._id};
+        });
+        setcourselist(rows);
+      })
+  }
+
   useEffect(() => {
     const username = sessionStorage.getItem('username');
     const token = sessionStorage.getItem('access_token');
@@ -133,12 +152,13 @@ function CourseDashboard(props){
 
     const handleDelete=(key)=> {
       var dataSource = [...courselist];
+      var id = dataSource[key].courseID;
+      var username = sessionStorage.getItem('username');
+      console.log(dataSource[key].courseID);
       setcourselist(dataSource.filter(item => item.key !== key));
-      /*API.delete(`user/${id}`).then((res) => {
-        //this.courselist.splice()
-        console.log(res);
+      API.delete(`course/${username}/${id}`).then((res) => {
         console.log(res.data);
-      });*/
+      });
     };
 
     const callbackFunction = (childData) => {
@@ -162,7 +182,7 @@ function CourseDashboard(props){
           alert("submit error");
           return;
         } else {
-          setcourselist([...courselist,res.data])
+          refresh();
         }
       });
       setvisible(false);

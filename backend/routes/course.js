@@ -66,16 +66,18 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/:id').get((req, res) => {
-  Exercise.findById(req.params.id)
+  Course.findById(req.params.id)
     .then(exercise => res.json(exercise))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').delete((req, res) => {
-  Exercise.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Course deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+router.route('/:username/:id').delete((req, res) => {
+  User.updateOne({userName:req.params.username }, { "$pull": { "courses": { "_id":req.params.id } } }, { safe: true,multi:true}, function(err, obj) {
+  }
+ ).then(exercise => res.json(exercise))
+ .catch(err => res.status(400).json('Error: ' + err));
+ });
+
 
 router.route('/update/:id').post((req, res) => {
   Course.findById(req.params.id)

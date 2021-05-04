@@ -88,7 +88,7 @@ const Room = (props) => {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideoRef.current.srcObject = stream;
-        socketRef.current = io.connect('http://localhost:5000/');
+        socketRef.current = io.connect('http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/');
         socketRef.current.emit("join room", props.match.params.roomID);
 
         socketRef.current.on("other user", (partnerID) => {
@@ -259,24 +259,12 @@ const Room = (props) => {
     partnerVideo.current.srcObject = stream;
   }
 
-  function acceptVideo(){
-    console.log(videohost);
-    console.log(videoID);
-    document.getElementById("acceptVideo").remove();
-    handleVideo();
-  }
 
   function handleData(data) {
     const parsed = JSON.parse(data);
     if (parsed.type === "newVideo") {
       setVideohost(parsed.host);
       setVideoID(parsed.data);
-      /*var accept= document.createElement("button");
-      accept.innerHTML = "Accept Video sent by your peer";
-      accept.setAttribute('id','acceptVideo');
-      accept.addEventListener ("click", acceptVideo);
-      var div = document.getElementById("player");
-      div.appendChild(accept);*/
     } else if (parsed.type === "pause") {
       VideoPlayer.current.pauseVideo();
     } else {
