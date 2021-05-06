@@ -16,7 +16,7 @@ function Register(props) {
         userPassword: password.value
       })
     .then(response => {
-          props.history.push('/login');
+          props.history.push('/');
     })
     .catch(err => setError("Register Failed. Username or email already exist"))
   }

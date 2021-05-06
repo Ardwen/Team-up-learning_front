@@ -91,7 +91,7 @@ class CourseManagementView extends React.Component {
   logout = () => {
     sessionStorage.removeItem("username");
     sessionStorage.removeItem("access_token");
-    this.props.history.push('/login');
+    this.props.history.push('/');
   }
 
   renderSwitch(param,color1,color2,color3) {
