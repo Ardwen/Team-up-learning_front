@@ -90,7 +90,7 @@ const Room = (props) => {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideoRef.current.srcObject = stream;
-        socketRef.current = io.connect('http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/',{
+        socketRef.current = io.connect('https://backendteamlearning.herokuapp.com/',{
   'sync disconnect on unload':true
 });
         //http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/
