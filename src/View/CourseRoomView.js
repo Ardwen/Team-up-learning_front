@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import {YOUR_API_KEY} from '../Utils/Authentication.js';
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -88,7 +90,10 @@ const Room = (props) => {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         userVideoRef.current.srcObject = stream;
-        socketRef.current = io.connect('http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/');
+        socketRef.current = io.connect('http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/',{
+  'sync disconnect on unload':true
+});
+        //http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/
         socketRef.current.emit("join room", props.match.params.roomID);
 
         socketRef.current.on("other user", (partnerID) => {
@@ -216,6 +221,14 @@ const Room = (props) => {
     var div = document.getElementById("controls");
     div.appendChild(play);
     div.appendChild(stop);
+    axios.get(`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoID}&key=${YOUR_API_KEY}`)
+      .then((response)=>{
+        console.log(response.data);
+        let title = response.data.items[0].snippet.title;
+        let description=response.data.items[0].snippet.description;
+        document.getElementById("videoTitle").innerHTML=title;
+        document.getElementById("videoDescription").innerHTML=description;
+      }).catch(err=>console.log(err));
   }
 
   function loadVideo() {
@@ -288,6 +301,12 @@ const Room = (props) => {
         <input type="text" placeholder="video link" value={videoID} onChange={e => setVideoID(e.target.value)} />
         <button id ="loadVideo" onClick={loadVideo}>Load video</button>
         </div>
+        <div>
+        <h3 id="videoTitle"></h3>
+        <br/>
+        <p id="videoDescription"></p>
+        </div>
+
       </RightRow>
     </Container>
   );

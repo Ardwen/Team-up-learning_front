@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import "antd/dist/antd.css";
 import "./index.css";
 import { Layout, Menu, Badge } from "antd";
@@ -20,7 +21,10 @@ class CourseManagementView extends React.Component {
     collapsed: false,
     content: "1",
     theme: "dark",
-    color: "#003366"
+    color: "#003366",
+    color1:"black",
+    color2: "#188fffd0",
+    color3:"#f1855ad0"
   };
 
   toggle = () => {
@@ -49,17 +53,39 @@ class CourseManagementView extends React.Component {
   };
 
   changeTheme = () => {
-    if(this.state.theme == "light"){
+    console.log("clocked");
+    let data = {
+	      model : "default"
+    }
+    axios.post(`http://colormind.io/api/`,{
+	      model : "default"
+    })
+      .then((response) => {
+        console.log(response.data.result);
+        let data=response.data.result;
+        this.setState({
+          theme: "light",
+          color: `rgb(${data[0][0]},${data[0][1]},${data[0][2]})`,
+          color1: `rgb(${data[1][0]},${data[1][1]},${data[1][2]})`,
+          color2: `rgb(${data[2][0]},${data[2][1]},${data[2][2]})`,
+          color3: `rgb(${data[3][0]},${data[3][1]},${data[3][2]})`,
+        });
+      }, (error) => {
+        console.log(error);
+      });
+    /*if(this.state.theme == "light"){
       this.setState({
         theme: "dark",
-        color: "#003366"
+        color: "#003366",
+        color2:
+        color:
       });
     } else {
       this.setState({
         theme: "light",
         color: "white"
       });
-    }
+    }*/
   }
 
   logout = () => {
@@ -68,14 +94,14 @@ class CourseManagementView extends React.Component {
     this.props.history.push('/login');
   }
 
-  renderSwitch(param) {
+  renderSwitch(param,color1,color2,color3) {
     switch (param) {
       case "1":
-        return <CourseDashboard />;
+        return <CourseDashboard c1={color1} c2={color2} c3={color3}/>;
       case "2":
-        return <CourseHistory />;
+        return <CourseHistory c1={color1} c2={color2} c3={color3}/>;
       case "3":
-        return <Mailbox />;
+        return <Mailbox c1={color1} c2={color2} c3={color3}/>;
       default:
     }
   }
@@ -133,10 +159,11 @@ class CourseManagementView extends React.Component {
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
-              backgroundColor: this.state.color
+              backgroundColor: this.state.color,
+              color:this.state.color1
             }}
           >
-            {this.renderSwitch(this.state.content)}
+            {this.renderSwitch(this.state.content,this.state.color1,this.state.color2,this.state.color3)}
           </Content>
         </Layout>
       </Layout>

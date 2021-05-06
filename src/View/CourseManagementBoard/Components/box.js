@@ -10,7 +10,7 @@ function CourseBox(props) {
           <Card
             title="Schedule"
             bordered={true}
-            style={{ backgroundColor: "#188fffd0" }}
+            style={{ backgroundColor: props.c2 }}
           >
             You have {props.box1} lectures scheduled
           </Card>
@@ -19,7 +19,7 @@ function CourseBox(props) {
           <Card
             title="Achievement"
             bordered={true}
-            style={{ backgroundColor: "#f1855ad0" }}
+            style={{ backgroundColor: props.c3 }}
           >
             You have completed 0 Lectures
           </Card>

@@ -196,7 +196,7 @@ function CourseDashboard(props){
 
     return(
       <div>
-        <CourseBox box1={courselist.length}/>
+        <CourseBox box1={courselist.length} c2={props.c2} c3={props.c3}/>
         <br />
         <Button
           type="dashed"
