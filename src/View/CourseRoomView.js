@@ -91,7 +91,8 @@ const Room = (props) => {
       .then((stream) => {
         userVideoRef.current.srcObject = stream;
         socketRef.current = io.connect('https://backendteamlearning.herokuapp.com/',{
-  'sync disconnect on unload':true
+  'sync disconnect on unload':true,
+   withCredentials: false
 });
         //http://ec2-3-17-9-85.us-east-2.compute.amazonaws.com:5000/
         socketRef.current.emit("join room", props.match.params.roomID);

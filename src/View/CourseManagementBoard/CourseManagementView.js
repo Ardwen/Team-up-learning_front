@@ -54,21 +54,43 @@ class CourseManagementView extends React.Component {
 
   changeTheme = () => {
     console.log("clocked");
-    let data = {
-	      model : "default"
-    }
-    axios.post(`http://colormind.io/api/`,{
-	      model : "default"
-    })
+    let lightcolor = (col,amt) => {
+        var usePound = false;
+        if ( col[0] == "#" ) {
+            col = col.slice(1);
+            usePound = true;
+        }
+
+        var num = parseInt(col,16);
+
+        var r = (num >> 16) + amt;
+
+        if ( r > 255 ) r = 255;
+        else if  (r < 0) r = 0;
+
+        var b = ((num >> 8) & 0x00FF) + amt;
+
+        if ( b > 255 ) b = 255;
+        else if  (b < 0) b = 0;
+
+        var g = (num & 0x0000FF) + amt;
+
+        if ( g > 255 ) g = 255;
+        else if  ( g < 0 ) g = 0;
+
+        return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+     }
+    axios.post(`https://tenapi.cn/color/`)
       .then((response) => {
-        console.log(response.data.result);
-        let data=response.data.result;
+        console.log(response.data);
+        let data=response.data;
+        let c1 = lightcolor(data,-30);
+        let c2 = lightcolor(data,30);
         this.setState({
           theme: "light",
-          color: `rgb(${data[0][0]},${data[0][1]},${data[0][2]})`,
-          color1: `rgb(${data[1][0]},${data[1][1]},${data[1][2]})`,
-          color2: `rgb(${data[2][0]},${data[2][1]},${data[2][2]})`,
-          color3: `rgb(${data[3][0]},${data[3][1]},${data[3][2]})`,
+          color: `${data}`,
+          color2: `${c1}`,
+          color3: `${c2}`
         });
       }, (error) => {
         console.log(error);
